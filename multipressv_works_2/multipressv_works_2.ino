@@ -12,6 +12,9 @@
 #define LED_PIN 13
 #define BUZZER_PIN 9
 #define BUZZ_FREQ 1400
+#define WPM 20
+
+const int unit_time = calculateUnitTime(WPM);
 
 
 Morse codec(LED_PIN, BUZZER_PIN, BUZZ_FREQ);
@@ -298,22 +301,22 @@ void switchOnState(char key)
           {
             case '.': //dit
               digitalWrite( ledPin, HIGH );
-              delay( UNIT_LENGTH );
+              delay( unit_time );
               digitalWrite( ledPin, LOW );
-              delay( UNIT_LENGTH );
+              delay( unit_time );
                 
               break;
       
             case '-': //dah
               digitalWrite( ledPin, HIGH );
-              delay( UNIT_LENGTH*3 );
+              delay( unit_time *3 );
               digitalWrite( ledPin, LOW );
-              delay( UNIT_LENGTH );
+              delay( unit_time );
                 
               break;
       
             case ' ': //gap
-              delay( UNIT_LENGTH );
+              delay( unit_time );
           }
         }
         break;

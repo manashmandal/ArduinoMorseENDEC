@@ -3,6 +3,13 @@
 
 #define UNIT_LENGTH 250
 
+//Formula for calculating unit time is
+// T = 1200 / W [Where T is the unit time (ms) and W is wpm
+int calculateUnitTime(byte wpm)
+{
+  return 1200 / wpm;
+}
+
 
 static  const struct {const char letter, *code;} MorseMap[] = {
     { 'A', ".-" },
