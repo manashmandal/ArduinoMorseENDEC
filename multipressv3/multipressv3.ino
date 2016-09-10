@@ -118,9 +118,14 @@ class LCD : public LiquidCrystal {
       longStrPrint(totalString, 0, 0);
     }
 
-    void fast_backspace(void)
+    void left(void)
     {
       moveCursorBack();
+    }
+
+    void right(void)
+    {
+      moveCursorFront();
     }
 
     void clear(void)
@@ -173,9 +178,17 @@ class LCD : public LiquidCrystal {
 
       void moveCursorBack(void)
       {
-        if (x == 0 && y == 0) return;
+        if (x < 0 && y < 0) return;
         if (y >= 0) y--;
         if (y < 0 && x != 0)  { x--; y = getColCount() - 1; }
+        setCursor(y, x);
+      }
+
+      void moveCursorFront(void)
+      {
+        if (y < getColCount()) y++;
+        if (y == getColCount())  { x++; y = 0; }
+        if (x == getRowCount() && y == getColCount()) { x = 0; y = 0; }
         setCursor(y, x);
       }
 
@@ -201,10 +214,6 @@ void alphaKeypadEvent(KeypadEvent key)
 
 unsigned long keyPressTime = 0;
 
-//bool isPressedAgain(void)
-//{
-//  return (uniqueKeyPressTime - millis() 
-//}
 
 void pop(String &obj)
 {
@@ -225,7 +234,6 @@ void switchOnState(char key)
         } else if ((millis() - keyPressTime) < PRESS_TIME_OUT) {
           virtKey++;
           pressCount++;
-//          Serial.println("time: " + String(millis() - keyPressTime));
           keyPressTime = millis();
           pop(message);
           message += String(virtKey);
@@ -237,10 +245,6 @@ void switchOnState(char key)
         }
 
           if (pressCount > 2){
-//            uniqueKeyPressTime = 0;
-//            firstKeyPressTime = 0;
-//            secondKeyPressTime = 0;
-//            thirdKeyPressTime = 0;
             pressCount = 0;
             virtKey = key;
           }
@@ -256,29 +260,15 @@ void switchOnState(char key)
 
 void setup()
 {
-  Serial.begin(BAUD);
-  pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, LOW);
-  keyPad.begin(makeKeymap(alphaKeys));
-  keyPad.setHoldTime(HOLD_TIME);
-  keyPad.addEventListener(alphaKeypadEvent);
-  lcd.begin(LCD_COL, LCD_ROW);
-  lcd.blink();
-//  lcd.print("magu");
-  lcd.setCursor(0, 0);
-//  lcd.print(lcd.getRowCount());
-//  lcd.print("12345678");
-////  lcd.print("bal");
-//  lcd.print("done");
-//    lcd.setCursor(0, 0);
-    lcd.print("balsabalsa");
-//    lcd.print("balsabalsa");
-//    lcd.print("balsabalsa");
-//    lcd.print("balsabalsa");
-//    lcd.setCursor(0, 2);
-    lcd.print("balsabalsa");
-    lcd.print("dhonso");
-//    lcd.print("abalkhanki");
+    Serial.begin(BAUD);
+    pinMode(ledPin, OUTPUT);
+    digitalWrite(ledPin, LOW);
+    keyPad.begin(makeKeymap(alphaKeys));
+    keyPad.setHoldTime(HOLD_TIME);
+    keyPad.addEventListener(alphaKeypadEvent);
+    lcd.begin(LCD_COL, LCD_ROW);
+    lcd.blink();
+    lcd.setCursor(0, 0);
     lcd.backspace();
     lcd.backspace();
 }
@@ -288,8 +278,9 @@ char key;
 void loop()
 {
   key = keyPad.getKey();
-  if (key == '-') lcd.fast_backspace();
+  if (key == '-') lcd.left();
+  else if (key == '?') lcd.right();
+  else if (key == '_') lcd.backspace();
   else lcd.print(key);
 }
-
 
