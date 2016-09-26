@@ -241,6 +241,26 @@ void alphaKeypadEvent(KeypadEvent key)
 unsigned long keyPressTime = 0;
 
 
+void dit(void)
+{
+  digitalWrite( ledPin, HIGH );
+  tone(BUZZER_PIN, BUZZ_FREQ);
+  delay( unit_time );
+  digitalWrite( ledPin, LOW );
+  noTone(BUZZER_PIN);
+  delay( unit_time );
+}
+
+void dah(void)
+{
+  digitalWrite( ledPin, HIGH );
+  tone(BUZZER_PIN, BUZZ_FREQ);
+  delay( unit_time *3 );
+  digitalWrite( ledPin, LOW );
+  noTone(BUZZER_PIN);
+  delay( unit_time );
+}
+
 void pop(String &obj)
 {
   obj.remove(obj.length() - 1, 1);
@@ -308,6 +328,8 @@ void switchOnState(char key)
       }
 
       else if ((!encode_mode) && (key == DASH || key == DOT || key == BACKSLASH || key == SPACE)){
+        if (key == DOT) dit();
+        if (key == DASH) dah();
         message += String(key);
         lcd.clear();
         lcd.nonBreakPrint("Decode: " + message, 0, 0);
@@ -392,5 +414,4 @@ void loop()
 {
   key = keyPad.getKey();
 }
-
 
