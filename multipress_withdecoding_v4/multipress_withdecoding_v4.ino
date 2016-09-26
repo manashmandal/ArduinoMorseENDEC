@@ -330,10 +330,6 @@ void switchOnState(char key)
       else if ((!encode_mode) && (key == DASH || key == DOT || key == BACKSLASH || key == SPACE)){
         if (key == DOT) dit();
         if (key == DASH) dah();
-        if (key == BACKSLASH) {
-           for (int i = 0; i < 7; i++)
-               delay(unit_time)
-        }
         message += String(key);
         lcd.clear();
         lcd.nonBreakPrint("Decode: " + message, 0, 0);
