@@ -22,7 +22,7 @@ function varargout = Demorse(varargin)
 
 % Edit the above text to modify the response to help Demorse
 
-% Last Modified by GUIDE v2.5 13-Sep-2016 16:32:25
+% Last Modified by GUIDE v2.5 18-Sep-2016 01:09:00
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -91,7 +91,7 @@ function loadButton_Callback(hObject, eventdata, handles)
 % hObject    handle to loadButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[handles.audiofile_name, handles.audiofile_path] = uigetfile({'*.wav'; '*.mp3'; '*.oog';'*.amr'}, 'Load an morse encoded audiofile')
+[handles.audiofile_name, handles.audiofile_path] = uigetfile({'*.wav'; '*.mp3'; '*.oog';'*.amr'; '*.m4a'}, 'Load an morse encoded audiofile')
 % Debugging purpose
 disp(handles.audiofile_name)
 disp(handles.audiofile_path)
@@ -164,3 +164,12 @@ set(handles.statusLabel, 'String', 'Load a Morse Encoded Audio File')
 set(handles.decodedEditText, 'String', 'Decoded text will be shown here')
 set(handles.filepathLabel, 'String', 'File Path')
 guidata(hObject, handles)
+
+
+% --- Executes on button press in playButton.
+function playButton_Callback(hObject, eventdata, handles)
+% hObject    handle to playButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[audiofile, sample_freq] = audioread(handles.full_file_path);
+sound(audiofile, sample_freq);

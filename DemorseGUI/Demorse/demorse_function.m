@@ -2,6 +2,7 @@ function decoded_str = demorse_function(filename)
 
 [x, fs] = audioread(filename);
 
+
 % decoded string
 decoded_string = '';
 
